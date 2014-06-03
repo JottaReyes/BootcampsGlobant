@@ -1,0 +1,11 @@
+package com.globant.bootcamps.excercise1;
+
+import java.util.ArrayList;
+
+public class asdasd {
+	
+	ArrayList<String> myArray = new ArrayList<String>();
+	
+	
+
+}

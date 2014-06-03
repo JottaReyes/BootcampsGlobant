@@ -1,0 +1,5 @@
+package com.globant.bootcamps.exercise1.utils;
+
+public class WriteJSONFile {
+
+}
