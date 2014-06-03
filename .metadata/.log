@@ -1541,3 +1541,6 @@ org.eclipse.core.internal.resources.ResourceException: A resource exists on disk
 
 !ENTRY com.android.ide.eclipse.adt 4 0 2014-06-03 11:16:07.144
 !MESSAGE Failed to load properties file for project 'AndroidBootcamps'
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2014-06-03 11:37:27.635
+!MESSAGE Failed to load properties file for project 'BootcampsGlobant'
