@@ -1,0 +1,47 @@
+package com.globant.bootcampsglobant;
+
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
+import android.widget.FrameLayout;
+
+public class Fragment_3 extends android.app.Fragment {
+	
+	Fragment_3 fragment;
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		
+		fragment = (Fragment_3)getFragmentManager().findFragmentById(R.id.)
+
+		new PlaceholderFragment();
+
+		FrameLayout mFrameLayout = (FrameLayout) inflater.inflate(
+				R.layout.activity_fragment_2, container, false);
+
+		return mFrameLayout;
+
+	}
+
+	/**
+	 * A placeholder fragment containing a simple view.
+	 */
+	public static class PlaceholderFragment extends Fragment {
+
+		public PlaceholderFragment() {
+		}
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {
+			View rootView = inflater.inflate(R.layout.fragment_1, container,
+					false);
+			return rootView;
+		}
+	}
+
+}

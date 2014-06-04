@@ -22,6 +22,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.globant.bootcampsglobant.Fragment_1"
+            android:label="@string/title_activity_fragment_1" >
+        </activity>
+        <activity
+            android:name="com.globant.bootcampsglobant.Fragment_2"
+            android:label="@string/title_activity_fragment_2" >
+        </activity>
+        <activity
+            android:name="com.globant.bootcampsglobant.Fragment_3"
+            android:label="@string/title_activity_fragment_3" >
+        </activity>
+        <activity
+            android:name="com.globant.bootcampsglobant.Fragment_4"
+            android:label="@string/title_activity_fragment_4" >
+        </activity>
     </application>
 
 </manifest>

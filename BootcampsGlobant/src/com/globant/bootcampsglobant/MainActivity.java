@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,9 +55,10 @@ public class MainActivity extends Activity {
 			}
 		};
 
-	
+		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+		
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
-
+		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
 
@@ -110,18 +112,44 @@ public class MainActivity extends Activity {
 
 	private void selectItem(int position) {
 
-		Fragment fragment = new NavigationDrawerClass();
-		Bundle args = new Bundle();
-		args.putInt(NavigationDrawerClass.ARG_DRAWER, position);
-		fragment.setArguments(args);
+//		Fragment fragment = new NavigationDrawerClass();
+//		Bundle args = new Bundle();
+//		args.putInt(NavigationDrawerClass.ARG_DRAWER, position);
+//		fragment.setArguments(args);
 		
-
+		Fragment fragment = null;
+		
+		switch (position) {
+		case 0:
+			fragment = new Fragment_1();
+			break;
+		case 1:
+			fragment = new Fragment_2();
+			break;
+		case 2:
+			fragment = new Fragment_3();
+			break;
+		case 3:
+			fragment = new Fragment_4();
+			break;
+		}
+		
 		FragmentManager fragmentManager = getFragmentManager();
+
 		fragmentManager.beginTransaction()
 				.replace(R.id.content_frame, fragment).commit();
 
+
 		mDrawerList.setItemChecked(position, true);
-		getActionBar().setTitle((mItems[position]));
 		mDrawerLayout.closeDrawer(mDrawerList);
+		
+
+//		FragmentManager fragmentManager = getFragmentManager();
+//		fragmentManager.beginTransaction()
+//				.replace(R.id.content_frame, fragment).commit();
+//
+//		mDrawerList.setItemChecked(position, true);
+//		getActionBar().setTitle((mItems[position]));
+//		mDrawerLayout.closeDrawer(mDrawerList);
 	}
 }

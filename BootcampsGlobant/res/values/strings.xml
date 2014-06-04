@@ -15,4 +15,16 @@
         <item>Item 4</item>
     </string-array>
 
+    <string name="title_activity_fragment_1">Fragment 1</string>
+    <string name="text_view_fragment_1">Fragment 1</string>
+    
+    <string name="title_activity_fragment_2">Fragment 2</string>
+    <string name="text_view_fragment_2">Fragment 2</string>
+    
+    <string name="title_activity_fragment_3">Fragment 3</string>
+    <string name="text_view_fragment_3">Fragment 3</string>
+    
+    <string name="title_activity_fragment_4">Fragment 4</string>
+    <string name="text_view_fragment_4">Fragment 4</string>
+
 </resources>
