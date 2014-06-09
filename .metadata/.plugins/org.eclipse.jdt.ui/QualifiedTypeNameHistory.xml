@@ -16,4 +16,6 @@
 <fullyQualifiedTypeName name="com.globant.bootcampsglobant.R.string"/>
 <fullyQualifiedTypeName name="com.globant.bootcampsglobant.R.drawable"/>
 <fullyQualifiedTypeName name="android.support.v4.view.GravityCompat"/>
+<fullyQualifiedTypeName name="android.app.FragmentTransaction"/>
+<fullyQualifiedTypeName name="com.globant.bootcampsglobant.R.id"/>
 </qualifiedTypeNameHistroy>

@@ -11,8 +11,7 @@
         android:layout_gravity="center_horizontal"
         android:textColor="@color/white"
         android:gravity="center|right"
-        android:textSize="@dimen/drawer_text_size"
-        android:padding="@dimen/drawer_item_padding"
+        android:textSize=""
         android:text="TextView" />
 
 </LinearLayout>
