@@ -7,6 +7,8 @@
     <string name="action_update">Update</string>
     <string name="drawer_open">Open Drawer</string>
     <string name="drawer_close">Close Drawer</string>
+    <string name="text_loading">Loading</string>
+    <string name="text_loaded">Loaded!!</string>
 
     <string-array name="Items">
         <item>Item 1</item>

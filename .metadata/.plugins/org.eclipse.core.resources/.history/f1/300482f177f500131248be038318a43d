@@ -1,0 +1,110 @@
+package com.globant.progressbar.async;
+
+import android.R;
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+public final class ProgressBarController extends AsyncTask<Void, Integer, Void> {
+
+	private int mProgressStatus = 0;
+	private int mProgressPercentage = 0;
+
+	private final ProgressBar mProgressBar;
+	private final TextView mTextView;
+	private final Handler mHandler = new Handler();
+
+	public LoadingAsync(final ProgressBar progress, final TextView textView) {
+
+		this.mProgressBar = progress;
+		this.mTextView = textView;
+
+	}
+
+	@Override
+	protected void onPreExecute() {
+
+		int max = 100;
+		mProgressBar.setMax(max);
+		mProgressBar.setProgress(0);
+		mTextView.setText(R.string.text_loading);
+		mProgressBar.setVisibility(View.VISIBLE);
+
+	}
+
+	@Override
+	protected Void doInBackground(final Void... params) {
+		mProgressBar.setVisibility(View.VISIBLE);
+		publishProgress();
+		return null;
+	}
+
+	@Override
+	protected void onProgressUpdate(final Integer... values) {
+		mProgressBar.setVisibility(View.VISIBLE);
+
+		new Thread(new Runnable() {
+			public void run() {
+				while (mProgressStatus < 100) {
+					mProgressStatus = doSomeTasks();
+
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+
+					mHandler.post(new Runnable() {
+						
+						public void run() {
+							mProgressBar.setProgress(mProgressStatus);
+							mProgressBar.incrementProgressBy(mProgressStatus);
+						}
+					});
+				}
+			}
+		}).start();
+
+	}
+
+	@Override
+	protected void onPostExecute(final Void result) {
+
+		mTextView.setText(R.string.text_loaded);
+		mProgressBar.setVisibility(View.INVISIBLE);
+	}
+
+	public int doSomeTasks() {
+
+		while (mProgressPercentage <= 1000000) {
+
+			mProgressPercentage++;
+
+			if (mProgressPercentage == 100000) {
+				return 10;
+			} else if (mProgressPercentage == 200000) {
+				return 20;
+			} else if (mProgressPercentage == 300000) {
+				return 30;
+			} else if (mProgressPercentage == 400000) {
+				return 40;
+			} else if (mProgressPercentage == 500000) {
+				return 50;
+			} else if (mProgressPercentage == 600000) {
+				return 60;
+			} else if (mProgressPercentage == 800000) {
+				return 70;
+			} else if (mProgressPercentage == 800000) {
+				return 80;
+			} else if (mProgressPercentage == 900000) {
+				return 90;
+			}
+		}
+
+		return 100;
+
+	}
+
+}
