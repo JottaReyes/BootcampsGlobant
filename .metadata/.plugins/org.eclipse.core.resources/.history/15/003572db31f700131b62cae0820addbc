@@ -16,7 +16,6 @@ public class Fragment_1 extends android.app.Fragment {
 	TextView fragmentTitle;
 	TextView mTextViewActivity;
 	ProgressBar mProgressBar;
-	ProgressDialog mProgressDialog;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -28,12 +27,10 @@ public class Fragment_1 extends android.app.Fragment {
 		mProgressBar = (ProgressBar) mFrameLayout
 				.findViewById(R.id.progressBarHorizontal);
 		
-		mProgressDialog = new ProgressDialog(getActivity().getApplicationContext());
-		
 		mTextViewActivity = (TextView) mFrameLayout
 				.findViewById(R.id.fragment1_text);
 
-		new ProgressBarController(mTextViewActivity, mProgressDialog).execute();
+		new ProgressBarController(mProgressBar, mTextViewActivity).execute();
 
 		return mFrameLayout;
 

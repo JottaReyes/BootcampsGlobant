@@ -1,11 +1,8 @@
 package com.globant.bootcampsglobant.async;
 
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -18,15 +15,14 @@ public final class ProgressBarController extends AsyncTask<Void, Integer, Void> 
 	private int mProgressStatus = 0;
 	private int mProgressPercentage = 0;
 
+	private final ProgressBar mProgressBar;
 	private final TextView mTextView;
 	private final Handler mHandler = new Handler();
-	private final ProgressDialog progressDialog;
 
-	public ProgressBarController(final TextView textView,
-			final ProgressDialog mProgressDialog) {
+	public ProgressBarController(final ProgressBar progress, final TextView textView) {
 
+		this.mProgressBar = progress;
 		this.mTextView = textView;
-		this.progressDialog = mProgressDialog;
 
 	}
 
@@ -34,103 +30,53 @@ public final class ProgressBarController extends AsyncTask<Void, Integer, Void> 
 	protected void onPreExecute() {
 
 		int max = 100;
-		progressDialog.setProgress(max);
-		progressDialog.setTitle("Progress Bar ...");
-		progressDialog.setMessage("Loading ...");
-		progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-
-		progressDialog.setMax(100);
-
+		mProgressBar.setMax(max);
+		mProgressBar.setProgress(0);
 		mTextView.setText(R.string.text_loading);
+		mProgressBar.setVisibility(View.VISIBLE);
 
 	}
 
 	@Override
 	protected Void doInBackground(final Void... params) {
-
+		mProgressBar.setVisibility(View.VISIBLE);
 		publishProgress();
 		return null;
 	}
 
 	@Override
 	protected void onProgressUpdate(final Integer... values) {
+		mProgressBar.setVisibility(View.VISIBLE);
 
-		progressDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Load",
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-
-					}
-				});
-
-		progressDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-
-			@Override
-			public void onShow(DialogInterface dialog) {
-
-				final Button b = progressDialog
-						.getButton(ProgressDialog.BUTTON_POSITIVE);
-
-				b.setOnClickListener(new View.OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						
-
-						if (progressDialog.getProgress() == 0) {
-							executeTask(mProgressStatus);
-						} else if (progressDialog.getProgress() == 100) {
-							progressDialog.setProgress(0);
-							mProgressStatus =0;
-							mProgressPercentage =0;
-							b.performClick();
-						}else if(progressDialog.getProgress() != 0){
-							mProgressStatus = progressDialog.getProgress();
-							executeTask(mProgressStatus);
-						}
-
-					}
-				});
-
-			}
-		});
-
-		progressDialog.show();
-
-	}
-
-	/**
-	 * Handle thread task for progress status
-	 */
-	private void executeTask(final int status) {
 		new Thread(new Runnable() {
 			public void run() {
 				while (mProgressStatus < 100) {
 					mProgressStatus = doSomeTasks();
-					
+
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					
-					mHandler.post(new Runnable() {
 
+					mHandler.post(new Runnable() {
+						
 						public void run() {
-							progressDialog.setProgress(mProgressStatus);
+							mProgressBar.setProgress(mProgressStatus);
+							mProgressBar.incrementProgressBy(mProgressStatus);
 						}
 					});
 				}
 			}
 		}).start();
+
 	}
 
 	@Override
 	protected void onPostExecute(final Void result) {
 
 		mTextView.setText(R.string.text_loaded);
-
+		mProgressBar.setVisibility(View.INVISIBLE);
 	}
 
 	public int doSomeTasks() {

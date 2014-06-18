@@ -28,12 +28,10 @@ public class Fragment_1 extends android.app.Fragment {
 		mProgressBar = (ProgressBar) mFrameLayout
 				.findViewById(R.id.progressBarHorizontal);
 		
-		mProgressDialog = new ProgressDialog(getActivity().getApplicationContext());
-		
 		mTextViewActivity = (TextView) mFrameLayout
 				.findViewById(R.id.fragment1_text);
 
-		new ProgressBarController(mTextViewActivity, mProgressDialog).execute();
+		new ProgressBarController(mProgressDialog, mTextViewActivity).execute();
 
 		return mFrameLayout;
 
