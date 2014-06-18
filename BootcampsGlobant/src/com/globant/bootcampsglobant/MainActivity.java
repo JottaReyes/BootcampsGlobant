@@ -15,11 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.globant.bootcampsglobant.async.ProgressBarController;
 
 public class MainActivity extends Activity {
 	private String[] mItems;
@@ -27,8 +23,6 @@ public class MainActivity extends Activity {
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
 	private CharSequence title;
-	private ProgressBar mProgressBar;
-	private TextView mTextViewActivity;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -39,12 +33,6 @@ public class MainActivity extends Activity {
 		mItems = getResources().getStringArray(R.array.Items);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
-		
-		mProgressBar = (ProgressBar) findViewById(R.id.progressBar1);
-		mTextViewActivity = (TextView) findViewById(R.id.textViewActivity);
-		
-		mProgressBar.setVisibility(View.VISIBLE);
-
 
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
 				R.layout.drawer_item, R.id.content, mItems));
@@ -141,15 +129,10 @@ public class MainActivity extends Activity {
 		}
 
 		FragmentManager fragmentManager = getFragmentManager();
-		
-		FragmentTransaction transaction = fragmentManager.beginTransaction();
-		
-		transaction.replace(R.id.content_frame, fragment).commit();
-		
-		new ProgressBarController(mProgressBar, mTextViewActivity).execute();
 
-//		fragmentManager.beginTransaction()
-//				.replace(R.id.content_frame, fragment).commit();
+		FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+		transaction.replace(R.id.content_frame, fragment).commit();
 
 		mDrawerList.setItemChecked(position, true);
 		mDrawerList.setItemChecked(position, true);
