@@ -20,7 +20,10 @@
 <fullyQualifiedTypeName name="com.globant.bootcampsglobant.R"/>
 <fullyQualifiedTypeName name="android.os.Handler"/>
 <fullyQualifiedTypeName name="com.globant.bootcampsglobant.async.ProgressBarController"/>
-<fullyQualifiedTypeName name="android.widget.ProgressBar"/>
 <fullyQualifiedTypeName name="android.widget.TextView"/>
+<fullyQualifiedTypeName name="android.widget.ProgressBar"/>
+<fullyQualifiedTypeName name="android.content.DialogInterface"/>
+<fullyQualifiedTypeName name="android.widget.Button"/>
 <fullyQualifiedTypeName name="android.app.ProgressDialog"/>
+<fullyQualifiedTypeName name="com.globant.bootcampsglobant.Fragment_1"/>
 </qualifiedTypeNameHistroy>
