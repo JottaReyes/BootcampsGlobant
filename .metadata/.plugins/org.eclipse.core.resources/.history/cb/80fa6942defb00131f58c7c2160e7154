@@ -1,0 +1,215 @@
+package com.globant.bootcampsglobant.async;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.globant.bootcampsglobant.R;
+
+public final class ProgressBarController extends AsyncTask<Void, Integer, Void> {
+
+	private int mProgressStatus = 0;
+	private int mProgressPercentage = 0;
+	AtomicBoolean flag = new AtomicBoolean(false);
+	private int currentPercentage = 0;
+	Thread loadBar;
+
+	private final TextView mTextView;
+	private final Handler mHandler = new Handler();
+	private final ProgressDialog progressDialog;
+
+	public ProgressBarController(final TextView textView,
+			final ProgressDialog mProgressDialog) {
+
+		this.mTextView = textView;
+		this.progressDialog = mProgressDialog;
+
+	}
+
+	@Override
+	protected void onPreExecute() {
+
+		int max = 100;
+		progressDialog.setProgress(max);
+		progressDialog.setTitle("Progress Bar ...");
+		progressDialog.setMessage("Loading ...");
+		progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+
+		progressDialog.setMax(100);
+
+		mTextView.setText(R.string.text_loading);
+
+	}
+
+	@Override
+	protected Void doInBackground(final Void... params) {
+
+		publishProgress();
+		return null;
+	}
+
+	@Override
+	protected void onProgressUpdate(final Integer... values) {
+
+		progressDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Load",
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+					}
+				});
+
+		progressDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+			@Override
+			public void onShow(DialogInterface dialog) {
+
+				final Button b = progressDialog
+						.getButton(ProgressDialog.BUTTON_POSITIVE);
+
+				b.setOnClickListener(new View.OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+
+						if (progressDialog.getProgress() == 0) {
+							executeTask(mProgressStatus, currentPercentage);
+						} else if (progressDialog.getProgress() == 100) {
+							progressDialog.setProgress(0);
+							mProgressStatus = 0;
+							mProgressPercentage = 0;
+							b.performClick();
+						} else if (progressDialog.getProgress() != 0
+								&& flag.get() == true) {
+							executeTask(mProgressStatus, mProgressPercentage);
+						} else if (flag.compareAndSet(true, false)) {
+							mProgressStatus = progressDialog.getProgress();
+							reinitTask(mProgressStatus, mProgressPercentage);
+						}
+
+					}
+				});
+
+			}
+		});
+
+		progressDialog.show();
+
+	}
+
+	/**
+	 * Handle thread task for progress status
+	 */
+	private void executeTask(final int status, final int percentage) {
+
+		if (flag.compareAndSet(true, false)) {
+			return;
+		} else {
+
+			new Thread(new Runnable() {
+
+				public void run() {
+					while (mProgressStatus < 100) {
+
+						mProgressStatus = doSomeTasks(mProgressPercentage);
+
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+
+						mHandler.post(new Runnable() {
+
+							public void run() {
+								if (flag.compareAndSet(false, true))
+									progressDialog.setProgress(mProgressStatus);
+							}
+						});
+					}
+				}
+			}).start();
+
+			flag.set(true);
+
+		}
+
+	}
+
+	private void reinitTask(final int status, int currentPercentage) {
+		new Thread(new Runnable() {
+			public void run() {
+				while (mProgressStatus < 100) {
+
+					if (flag.compareAndSet(true, false)) {
+						mProgressStatus = status;
+						progressDialog.setProgress(mProgressStatus);
+					} else {
+
+						mProgressStatus = doSomeTasks(mProgressPercentage);
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+
+					}
+
+					mHandler.post(new Runnable() {
+
+						public void run() {
+							progressDialog.setProgress(mProgressStatus);
+						}
+					});
+				}
+			}
+		}).start();
+
+	}
+
+	@Override
+	protected void onPostExecute(final Void result) {
+
+		mTextView.setText(R.string.text_loaded);
+
+	}
+
+	public int doSomeTasks(int currentProgressPercentage) {
+
+		while (mProgressPercentage <= 1000000) {
+
+			mProgressPercentage++;
+
+			if (mProgressPercentage == 100000) {
+				return 10;
+			} else if (mProgressPercentage == 200000) {
+				return 20;
+			} else if (mProgressPercentage == 300000) {
+				return 30;
+			} else if (mProgressPercentage == 400000) {
+				return 40;
+			} else if (mProgressPercentage == 500000) {
+				return 50;
+			} else if (mProgressPercentage == 600000) {
+				return 60;
+			} else if (mProgressPercentage == 800000) {
+				return 70;
+			} else if (mProgressPercentage == 800000) {
+				return 80;
+			} else if (mProgressPercentage == 900000) {
+				return 90;
+			}
+		}
+
+		return 100;
+
+	}
+
+}

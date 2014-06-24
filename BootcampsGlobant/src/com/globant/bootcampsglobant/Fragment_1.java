@@ -27,15 +27,9 @@ public class Fragment_1 extends android.app.Fragment {
 		FrameLayout mFrameLayout = (FrameLayout) inflater.inflate(
 				R.layout.activity_fragment_1, container, false);
 
-		mProgressBar = (ProgressBar) mFrameLayout
-				.findViewById(R.id.progressBarHorizontal);
-
 		mButtonLoad = (Button) mFrameLayout.findViewById(R.id.button1);
 
 		mProgressDialog = new ProgressDialog(getActivity());
-
-		mTextViewActivity = (TextView) mFrameLayout
-				.findViewById(R.id.fragment1_text);
 
 		mButtonLoad.setOnClickListener(new View.OnClickListener() {
 

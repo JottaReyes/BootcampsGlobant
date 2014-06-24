@@ -1,5 +1,7 @@
 package com.globant.bootcampsglobant.async;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
@@ -14,17 +16,15 @@ public final class ProgressBarController extends AsyncTask<Void, Integer, Void> 
 
 	private int mProgressStatus = 0;
 	private int mProgressPercentage = 0;
-	boolean flag = false;
+	AtomicBoolean flag = new AtomicBoolean(false);
 	private int currentPercentage = 0;
 
-	private final TextView mTextView;
 	private final Handler mHandler = new Handler();
 	private final ProgressDialog progressDialog;
 
 	public ProgressBarController(final TextView textView,
 			final ProgressDialog mProgressDialog) {
 
-		this.mTextView = textView;
 		this.progressDialog = mProgressDialog;
 
 	}
@@ -39,8 +39,6 @@ public final class ProgressBarController extends AsyncTask<Void, Integer, Void> 
 		progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 
 		progressDialog.setMax(100);
-
-		mTextView.setText(R.string.text_loading);
 
 	}
 
@@ -77,16 +75,18 @@ public final class ProgressBarController extends AsyncTask<Void, Integer, Void> 
 					public void onClick(View v) {
 
 						if (progressDialog.getProgress() == 0) {
-							executeTask(mProgressStatus);
+							executeTask(mProgressStatus, currentPercentage);
 						} else if (progressDialog.getProgress() == 100) {
 							progressDialog.setProgress(0);
 							mProgressStatus = 0;
 							mProgressPercentage = 0;
 							b.performClick();
-						} else if (progressDialog.getProgress() != 0) {
+						} else if (progressDialog.getProgress() != 0
+								&& flag.get() == true) {
+							executeTask(mProgressStatus, mProgressPercentage);
+						} else if (flag.get() == false) {
 							mProgressStatus = progressDialog.getProgress();
 							currentPercentage = mProgressPercentage;
-							flag = true;
 							reinitTask(mProgressStatus, currentPercentage);
 						}
 
@@ -103,27 +103,41 @@ public final class ProgressBarController extends AsyncTask<Void, Integer, Void> 
 	/**
 	 * Handle thread task for progress status
 	 */
-	private void executeTask(final int status) {
-		new Thread(new Runnable() {
-			public void run() {
-				while (mProgressStatus < 100) {
-					mProgressStatus = doSomeTasks(mProgressPercentage);
+	private void executeTask(final int status, final int percentage) {
 
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
+		if (flag.get() == true) {
+			flag.set(false);
+			return;
+		} else {
 
-					mHandler.post(new Runnable() {
+			new Thread(new Runnable() {
 
-						public void run() {
-							progressDialog.setProgress(mProgressStatus);
+				public void run() {
+					while (mProgressStatus < 100) {
+
+						mProgressStatus = doSomeTasks(mProgressPercentage);
+
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
 						}
-					});
+
+						mHandler.post(new Runnable() {
+
+							public void run() {
+								if (flag.get() == true)
+									progressDialog.setProgress(mProgressStatus);
+							}
+						});
+					}
 				}
-			}
-		}).start();
+			}).start();
+
+			flag.set(true);
+
+		}
+
 	}
 
 	private void reinitTask(final int status, int currentPercentage) {
@@ -131,10 +145,9 @@ public final class ProgressBarController extends AsyncTask<Void, Integer, Void> 
 			public void run() {
 				while (mProgressStatus < 100) {
 
-					if (flag == true) {
+					if (flag.compareAndSet(true, false)) {
 						mProgressStatus = status;
 						progressDialog.setProgress(mProgressStatus);
-						flag = false;
 					} else {
 
 						mProgressStatus = doSomeTasks(mProgressPercentage);
@@ -160,8 +173,6 @@ public final class ProgressBarController extends AsyncTask<Void, Integer, Void> 
 
 	@Override
 	protected void onPostExecute(final Void result) {
-
-		mTextView.setText(R.string.text_loaded);
 
 	}
 

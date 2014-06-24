@@ -1,0 +1,6 @@
+package com.globant.bootcampsglobant.async;
+
+public class StopThread extends Thread{
+
+	
+}

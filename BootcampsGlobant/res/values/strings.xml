@@ -9,6 +9,7 @@
     <string name="drawer_close">Close Drawer</string>
     <string name="text_loading">Loading</string>
     <string name="text_loaded">Loaded!!</string>
+    <string name="text_button">Load Bar</string>
 
     <string-array name="Items">
         <item>Item 1</item>
