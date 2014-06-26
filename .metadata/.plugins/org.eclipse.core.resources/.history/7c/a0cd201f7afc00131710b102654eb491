@@ -84,7 +84,8 @@ public final class ProgressBarController extends AsyncTask<Void, Integer, Void> 
 							executeTask(mProgressStatus, mProgressPercentage);
 						} else if (flag.get() == false) {
 							mProgressStatus = progressDialog.getProgress();
-							reinitTask(mProgressStatus);
+							currentPercentage = mProgressPercentage;
+							reinitTask(currentPercentage);
 						}
 
 					}
@@ -102,7 +103,7 @@ public final class ProgressBarController extends AsyncTask<Void, Integer, Void> 
 	 * @param status
 	 * @param percentage
 	 */
-	private void executeTask(final int status, final int percentage) {
+	private void executeTask(final int percentage) {
 
 		if (flag.get() == true) {
 			flag.set(false);
